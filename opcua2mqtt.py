@@ -6,12 +6,13 @@ from opcua import Client
 #import context  # Ensures paho is in PYTHONPATH
 import paho.mqtt.publish as publish
 import awsiot
+import redis
 
 MQTT_MODE = 'simple' # simple,simplewithpass,awsiot
 AWSIOT_AK = 'test'
 AWSIOT_SK = 'test'
-
-
+HOST = '180.76.242.57'
+SAVE_TO_REDIS_EN = True
 #------------------------
 # normal_mqtt_publish
 #------------------------
@@ -37,9 +38,11 @@ def awsiot_mqtt_publish(topic,payload):
 if __name__ == "__main__":
 
 
-    client = Client("opc.tcp://180.76.242.57:4840/freeopcua/server/")
+    client = Client("opc.tcp://" + HOST + ":4840/freeopcua/server/")
     #client = Client("opc.tcp://localhost:4840/freeopcua/server/")    
     # client = Client("opc.tcp://admin@localhost:4840/freeopcua/server/") #connect using a user
+    r = redis.Redis(host=HOST, port=6379, db=0)
+    
     while True:
         try:
             client.connect()
@@ -67,6 +70,22 @@ if __name__ == "__main__":
             client.disconnect()            
             print("myvar is: ", myvar)
             print("myobj is: ", obj)
+
+            
+            #-------------------------
+            # save opc ua data redis
+            #-------------------------
+            if SAVE_TO_REDIS_EN == True:
+                try:
+                    l = r.lpush('opcua_001',str(myvar))
+                    print('save opcua data to redis, ret=',l)
+                except Exception as e:
+                    print('save opcua data to redis exception:',str(e))            
+                    try:
+                        r.close()
+                        r = redis.Redis(host=HOST, port=6379, db=0)
+                    except:
+                        pass
 
             # Stacked myvar access
             # print("myvar is: ", root.get_children()[0].get_children()[1].get_variables()[0].get_value())
