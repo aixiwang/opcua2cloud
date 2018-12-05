@@ -24,15 +24,9 @@ if __name__ == "__main__":
     #print('connected to redis')
     while True:
         try:
-            len = r.llen(KEY)
-            #print('len:',len)
-            if (len > 0):
-                v = r.rpop(KEY)
-                #print('v:',v)
-                writefile2(KEY + '.csv',v + '\r\n')
-            else:
-                print('complted')
-                
+            r.lpush(KEY,'test data')
+            time.sleep(10)
+            
         except Exception as e:
-            print('exception:',str(e))        
-            break
+            print('exception:',str(e))
+            pass
