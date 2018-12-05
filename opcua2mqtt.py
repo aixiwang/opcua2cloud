@@ -11,8 +11,8 @@ import redis
 MQTT_MODE = 'simple' # simple,simplewithpass,awsiot
 AWSIOT_AK = 'test'
 AWSIOT_SK = 'test'
-HOST = '180.76.242.57'
-SAVE_TO_REDIS_EN = True
+HOST = '127.0.0.1'
+SAVE_TO_REDIS_EN = False
 #------------------------
 # normal_mqtt_publish
 #------------------------
@@ -106,5 +106,5 @@ if __name__ == "__main__":
             except:
                 pass
         
-        time.sleep(5)
+        time.sleep(1)
         
