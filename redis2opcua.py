@@ -9,7 +9,7 @@ from opcua.server.history_sql import HistorySQLite
 import redis
 
 HOST = '180.76.242.57'
-KEY = 'xxx'
+KEY = '66CFF484948668381143656'
 
 if __name__ == "__main__":
     r = redis.Redis(host=HOST, port=6379, db=0)
