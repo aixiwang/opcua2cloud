@@ -6,6 +6,7 @@ import binascii
 
 HOST = '180.76.242.57'
 KEY = 'CAM-8D7D3ADC8534'
+KEY2 = KEY + '-file'
 JPG_ROOT_DIR = '/root/jpg/'
  
 #-------------------
@@ -35,12 +36,13 @@ if __name__ == "__main__":
                  
                 v_bin = binascii.unhexlify(v)
                 f_name = JPG_ROOT_DIR + KEY + '-' + str(time.time()) + '.jpg'
+                r.lpush(KEY2,f_name)
                 writefile(f_name,v_bin)
                 print('save value to:',f_name)
 
             else:
-                print('=')
-                time.sleep(0.1)
+                #print('=')
+                time.sleep(1)
                 
         except Exception as e:
             print('exception:',str(e))
