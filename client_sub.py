@@ -51,7 +51,8 @@ mqttc.on_publish = on_publish
 mqttc.on_subscribe = on_subscribe
 # Uncomment to enable debug messages
 # mqttc.on_log = on_log
-mqttc.connect("m2m.eclipse.org", 1883, 60)
+#mqttc.connect("m2m.eclipse.org", 1883, 60)
+mqttc.connect("180.76.242.57", 1883, 60)
 mqttc.subscribe("opcua2mqtt/#", 0)
 
 mqttc.loop_forever()
