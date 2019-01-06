@@ -35,7 +35,9 @@ if __name__ == "__main__":
                 #print('v:',type(v),v)
                  
                 v_bin = binascii.unhexlify(v)
-                f_name = JPG_ROOT_DIR + KEY + '-' + str(time.time()) + '.jpg'
+                time_str = time.strftime('%Y%m%d-%H%M%S', time.localtime(time.time()))
+                f_name = JPG_ROOT_DIR + KEY + '-' + time_str + '.jpg'
+
                 r.lpush(KEY2,f_name)
                 writefile(f_name,v_bin)
                 print('save value to:',f_name)
