@@ -5,8 +5,8 @@ import redis
 import binascii
 
 HOST = '180.76.242.57'
-KEY = 'CAM-8D7D3ADC8534'
-KEY2 = KEY + '-file'
+#KEY = 'CAM-000000000001'
+KEY_SET = ['CAM-B6E62D9C5E45','CAM-8D7D3ADC8534']
 JPG_ROOT_DIR = '/root/jpg/'
  
 #-------------------
@@ -28,24 +28,25 @@ if __name__ == "__main__":
     #print('connected to redis')
     while True:
         try:
-            len = r.llen(KEY)
-            #print('len:',len)
-            if (len > 0):
-                v = r.rpop(KEY)
-                #print('v:',type(v),v)
-                 
-                v_bin = binascii.unhexlify(v)
-                time_str = time.strftime('%Y%m%d-%H%M%S', time.localtime(time.time()))
-                f_name = JPG_ROOT_DIR + KEY + '-' + time_str + '.jpg'
+            for KEY in KEY_SET:
+                len = r.llen(KEY)
+                #print('len:',len)
+                if (len > 0):
+                    v = r.rpop(KEY)
+                    #print('v:',type(v),v)
+                     
+                    v_bin = binascii.unhexlify(v)
+                    time_str = time.strftime('%Y%m%d-%H%M%S', time.localtime(time.time()))
+                    f_name = JPG_ROOT_DIR + KEY + '-' + time_str + '.jpg'
+                    KEY2 = KEY + '-file'
+                    r.lpush(KEY2,f_name)
+                    writefile(f_name,v_bin)
+                    print('save value to:',f_name)
 
-                r.lpush(KEY2,f_name)
-                writefile(f_name,v_bin)
-                print('save value to:',f_name)
-
-            else:
-                #print('=')
-                time.sleep(1)
-                
+                else:
+                    #print('=')
+                    time.sleep(1)
+                    
         except Exception as e:
             print('exception:',str(e))
 
